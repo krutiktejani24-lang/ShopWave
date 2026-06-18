@@ -1,0 +1,1513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ShopWave — Premium E-Commerce</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+<style>
+/* ── RESET & ROOT ───────────────────────────── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0F0F13;
+  --bg2:#16161C;
+  --bg3:#1E1E26;
+  --bg4:#26262F;
+  --card:#1A1A22;
+  --border:#2A2A35;
+  --border2:#35353F;
+  --green:#00D68F;
+  --green2:#00A86B;
+  --green3:#00FF9F;
+  --purple:#7B5CF0;
+  --purple2:#9B7FFF;
+  --red:#FF4D6D;
+  --amber:#FFB800;
+  --white:#FFFFFF;
+  --t1:#F0F0F5;
+  --t2:#9898A8;
+  --t3:#60606E;
+  --radius:12px;
+  --radius-sm:8px;
+  --radius-lg:16px;
+  --radius-xl:24px;
+  --shadow:0 4px 24px rgba(0,0,0,0.4);
+  --transition:0.2s cubic-bezier(0.4,0,0.2,1);
+}
+html,body{height:100%;overflow:hidden;font-family:'Inter',sans-serif;background:var(--bg);color:var(--t1)}
+
+/* ── SCROLLBAR ──────────────────────────────── */
+::-webkit-scrollbar{width:4px;height:4px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px}
+
+/* ── APP SHELL ──────────────────────────────── */
+.app-shell{display:grid;grid-template-columns:240px 1fr;grid-template-rows:64px 1fr;height:100vh;overflow:hidden}
+
+/* ── TOPBAR ─────────────────────────────────── */
+.topbar{
+  grid-column:1/-1;
+  background:var(--bg2);
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:center;gap:16px;
+  padding:0 24px;
+  position:relative;z-index:50;
+}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;flex-shrink:0}
+.brand-icon{width:34px;height:34px;background:var(--green);border-radius:10px;display:flex;align-items:center;justify-content:center}
+.brand-icon svg{width:18px;height:18px;fill:var(--bg)}
+.brand-name{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:var(--white);letter-spacing:-0.5px}
+.brand-name span{color:var(--green)}
+
+.search-bar{flex:1;max-width:480px;position:relative}
+.search-bar input{
+  width:100%;height:38px;
+  background:var(--bg3);border:1px solid var(--border);
+  border-radius:var(--radius);padding:0 16px 0 42px;
+  font-size:13.5px;color:var(--t1);font-family:'Inter',sans-serif;
+  transition:border-color var(--transition);
+}
+.search-bar input::placeholder{color:var(--t3)}
+.search-bar input:focus{outline:none;border-color:var(--green)}
+.search-bar .si{position:absolute;left:14px;top:50%;transform:translateY(-50%);opacity:.5;pointer-events:none}
+
+.topbar-right{display:flex;align-items:center;gap:8px;margin-left:auto}
+.nav-btn{
+  position:relative;display:flex;align-items:center;gap:7px;
+  height:36px;padding:0 14px;border-radius:var(--radius-sm);
+  background:transparent;border:1px solid var(--border);
+  color:var(--t2);font-size:13px;cursor:pointer;transition:all var(--transition);
+  font-family:'Inter',sans-serif;white-space:nowrap;
+}
+.nav-btn:hover{background:var(--bg3);color:var(--t1);border-color:var(--border2)}
+.nav-btn.active{background:var(--bg3);color:var(--green);border-color:var(--green)}
+.nav-btn svg{width:16px;height:16px;flex-shrink:0}
+.badge{
+  position:absolute;top:-6px;right:-6px;
+  min-width:18px;height:18px;padding:0 5px;
+  background:var(--green);color:var(--bg);
+  border-radius:20px;font-size:10px;font-weight:700;
+  display:flex;align-items:center;justify-content:center;
+  border:2px solid var(--bg2);
+}
+.premium-btn{
+  background:linear-gradient(135deg,var(--purple),var(--purple2));
+  border:none;color:var(--white);gap:6px;
+}
+.premium-btn:hover{opacity:.9;color:var(--white)}
+
+/* ── SIDEBAR ─────────────────────────────────── */
+.sidebar{
+  background:var(--bg2);border-right:1px solid var(--border);
+  display:flex;flex-direction:column;overflow-y:auto;overflow-x:hidden;
+}
+.sidebar-section{padding:20px 16px 8px}
+.sidebar-label{font-size:10px;font-weight:600;color:var(--t3);letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px;padding:0 8px}
+.cat-btn{
+  display:flex;align-items:center;gap:10px;
+  width:100%;padding:9px 12px;border-radius:var(--radius-sm);
+  background:transparent;border:none;color:var(--t2);
+  font-size:13.5px;cursor:pointer;transition:all var(--transition);
+  text-align:left;font-family:'Inter',sans-serif;
+}
+.cat-btn:hover{background:var(--bg3);color:var(--t1)}
+.cat-btn.active{background:rgba(0,214,143,.12);color:var(--green);font-weight:500}
+.cat-btn .cat-emoji{font-size:16px;width:24px;text-align:center}
+.cat-count{margin-left:auto;font-size:11px;color:var(--t3)}
+.cat-btn.active .cat-count{color:var(--green);opacity:.7}
+
+.sidebar-divider{height:1px;background:var(--border);margin:12px 16px}
+
+.filter-section{padding:0 16px 16px}
+.filter-label{font-size:10px;font-weight:600;color:var(--t3);letter-spacing:.1em;text-transform:uppercase;margin-bottom:10px;padding:0 4px}
+.sort-select{
+  width:100%;padding:9px 12px;
+  background:var(--bg3);border:1px solid var(--border);
+  border-radius:var(--radius-sm);color:var(--t1);
+  font-size:13px;font-family:'Inter',sans-serif;cursor:pointer;
+}
+.sort-select:focus{outline:none;border-color:var(--green)}
+.price-inputs{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
+.price-input{
+  padding:8px 10px;background:var(--bg3);
+  border:1px solid var(--border);border-radius:var(--radius-sm);
+  color:var(--t1);font-size:13px;font-family:'Inter',sans-serif;
+  width:100%;
+}
+.price-input::placeholder{color:var(--t3)}
+.price-input:focus{outline:none;border-color:var(--green)}
+
+.undo-redo{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
+.undo-redo button{
+  padding:9px 8px;background:var(--bg3);
+  border:1px solid var(--border);border-radius:var(--radius-sm);
+  color:var(--t2);font-size:12.5px;cursor:pointer;
+  font-family:'Inter',sans-serif;display:flex;align-items:center;justify-content:center;gap:5px;
+  transition:all var(--transition);
+}
+.undo-redo button:hover:not(:disabled){background:var(--bg4);color:var(--t1)}
+.undo-redo button:disabled{opacity:.3;cursor:not-allowed}
+.undo-redo button svg{width:14px;height:14px}
+
+/* ── MAIN CONTENT ───────────────────────────── */
+.main{overflow-y:auto;background:var(--bg);display:flex;flex-direction:column}
+
+/* ── PAGE SYSTEM ─────────────────────────────── */
+.page{display:none;flex-direction:column;flex:1;padding:24px;gap:20px}
+.page.active{display:flex}
+
+/* ── HOME PAGE ──────────────────────────────── */
+.hero{
+  background:var(--bg2);border:1px solid var(--border);
+  border-radius:var(--radius-xl);padding:28px 32px;
+  display:flex;align-items:center;justify-content:space-between;
+  position:relative;overflow:hidden;
+}
+.hero::before{
+  content:'';position:absolute;top:-40px;right:-40px;
+  width:240px;height:240px;background:radial-gradient(circle,rgba(0,214,143,.12) 0%,transparent 70%);
+  pointer-events:none;
+}
+.hero-text h1{font-family:'Syne',sans-serif;font-size:28px;font-weight:800;color:var(--white);line-height:1.2;margin-bottom:8px}
+.hero-text h1 span{color:var(--green)}
+.hero-text p{font-size:14px;color:var(--t2);margin-bottom:20px;max-width:360px}
+.hero-actions{display:flex;gap:10px;flex-wrap:wrap}
+.btn-primary{
+  height:38px;padding:0 20px;background:var(--green);color:var(--bg);
+  border:none;border-radius:var(--radius-sm);font-size:13.5px;font-weight:600;
+  cursor:pointer;font-family:'Inter',sans-serif;transition:all var(--transition);display:flex;align-items:center;gap:7px;
+}
+.btn-primary:hover{background:var(--green3);transform:translateY(-1px)}
+.btn-outline{
+  height:38px;padding:0 20px;background:transparent;color:var(--t1);
+  border:1px solid var(--border2);border-radius:var(--radius-sm);font-size:13.5px;
+  cursor:pointer;font-family:'Inter',sans-serif;transition:all var(--transition);display:flex;align-items:center;gap:7px;
+}
+.btn-outline:hover{background:var(--bg3);border-color:var(--green)}
+.hero-badges{display:flex;flex-direction:column;gap:8px;flex-shrink:0}
+.hero-badge{
+  display:flex;align-items:center;gap:8px;
+  background:rgba(255,255,255,.05);border:1px solid var(--border);
+  border-radius:var(--radius-sm);padding:8px 14px;font-size:12.5px;color:var(--t2);
+}
+.hero-badge svg{width:16px;height:16px;color:var(--green);flex-shrink:0}
+
+.section-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:2px}
+.section-hd h2{font-size:16px;font-weight:600;color:var(--white)}
+.section-hd a{font-size:12.5px;color:var(--green);cursor:pointer;text-decoration:none}
+.section-hd a:hover{text-decoration:underline}
+
+/* ── RECENT CHIPS ───────────────────────────── */
+.chips-row{display:flex;gap:8px;flex-wrap:wrap}
+.chip{
+  display:flex;align-items:center;gap:6px;
+  padding:7px 13px;background:var(--bg2);
+  border:1px solid var(--border);border-radius:40px;
+  font-size:12.5px;color:var(--t2);cursor:pointer;
+  transition:all var(--transition);
+}
+.chip:hover{background:var(--bg3);color:var(--t1);border-color:var(--border2)}
+
+/* ── PRODUCTS GRID ──────────────────────────── */
+.products-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(190px,1fr));
+  gap:16px;
+}
+.product-card{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:var(--radius-lg);overflow:hidden;cursor:pointer;
+  transition:all var(--transition);position:relative;
+}
+.product-card:hover{border-color:var(--border2);transform:translateY(-2px);box-shadow:0 8px 32px rgba(0,0,0,.4)}
+.pc-img{
+  height:148px;display:flex;align-items:center;justify-content:center;
+  font-size:56px;background:var(--bg3);position:relative;
+}
+.pc-tags{position:absolute;top:10px;left:10px;display:flex;flex-direction:column;gap:4px}
+.tag{font-size:10px;font-weight:700;padding:3px 8px;border-radius:20px}
+.tag-disc{background:var(--red);color:#fff}
+.tag-prem{background:var(--purple);color:#fff}
+.tag-new{background:var(--amber);color:var(--bg)}
+.wl-btn{
+  position:absolute;top:8px;right:8px;
+  width:28px;height:28px;border-radius:50%;
+  background:var(--bg2);border:1px solid var(--border);
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;transition:all var(--transition);
+}
+.wl-btn:hover{background:var(--bg3);border-color:var(--red)}
+.wl-btn.active{background:rgba(255,77,109,.15);border-color:var(--red)}
+.wl-btn svg{width:14px;height:14px;stroke:var(--t3);transition:stroke var(--transition)}
+.wl-btn.active svg{stroke:var(--red);fill:var(--red)}
+.pc-body{padding:14px}
+.pc-cat{font-size:10.5px;color:var(--t3);font-weight:500;text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px}
+.pc-name{font-size:14px;font-weight:600;color:var(--t1);margin-bottom:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pc-stars{display:flex;align-items:center;gap:4px;margin-bottom:8px}
+.pc-stars span{font-size:11px;color:var(--amber)}
+.pc-stars small{font-size:11px;color:var(--t3)}
+.pc-pricing{display:flex;align-items:baseline;gap:7px;margin-bottom:10px}
+.pc-price{font-size:17px;font-weight:700;color:var(--green)}
+.pc-old{font-size:12px;color:var(--t3);text-decoration:line-through}
+.pc-save{font-size:11px;color:var(--red);font-weight:600}
+.pc-add{
+  width:100%;height:34px;background:rgba(0,214,143,.12);
+  border:1px solid rgba(0,214,143,.25);border-radius:var(--radius-sm);
+  color:var(--green);font-size:12.5px;font-weight:600;
+  cursor:pointer;font-family:'Inter',sans-serif;
+  transition:all var(--transition);display:flex;align-items:center;justify-content:center;gap:6px;
+}
+.pc-add:hover{background:rgba(0,214,143,.2);border-color:var(--green)}
+.pc-add.in-cart{background:rgba(0,214,143,.2);border-color:var(--green)}
+.pc-add svg{width:14px;height:14px}
+
+/* ── HORIZONTAL SCROLL ROW ──────────────────── */
+.h-scroll{display:flex;gap:12px;overflow-x:auto;padding-bottom:4px}
+.h-scroll::-webkit-scrollbar{height:3px}
+.rec-card{
+  min-width:140px;background:var(--card);border:1px solid var(--border);
+  border-radius:var(--radius-lg);padding:14px;text-align:center;
+  cursor:pointer;transition:all var(--transition);flex-shrink:0;
+}
+.rec-card:hover{border-color:var(--green);background:var(--bg3)}
+.rec-emoji{font-size:32px;margin-bottom:8px}
+.rec-name{font-size:12.5px;font-weight:600;color:var(--t1);margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rec-price{font-size:12px;color:var(--green);font-weight:600}
+
+/* ── CATALOG PAGE ───────────────────────────── */
+.catalog-controls{
+  display:flex;align-items:center;gap:10px;flex-wrap:wrap;
+}
+.result-info{font-size:13px;color:var(--t2)}
+.result-info strong{color:var(--t1)}
+
+/* ── CART PAGE ──────────────────────────────── */
+.cart-layout{display:grid;grid-template-columns:1fr 340px;gap:20px;align-items:start}
+.cart-items-col{display:flex;flex-direction:column;gap:12px}
+.cart-item{
+  display:flex;gap:14px;align-items:center;
+  background:var(--card);border:1px solid var(--border);
+  border-radius:var(--radius);padding:14px;
+  transition:border-color var(--transition);
+}
+.cart-item:hover{border-color:var(--border2)}
+.ci-img{width:64px;height:64px;background:var(--bg3);border-radius:var(--radius-sm);display:flex;align-items:center;justify-content:center;font-size:30px;flex-shrink:0}
+.ci-info{flex:1;min-width:0}
+.ci-name{font-size:14px;font-weight:600;color:var(--t1);margin-bottom:2px}
+.ci-cat{font-size:11.5px;color:var(--t3);margin-bottom:8px}
+.ci-controls{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.qty-box{display:flex;align-items:center;gap:0;background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius-sm);overflow:hidden}
+.qty-box button{width:28px;height:28px;background:transparent;border:none;color:var(--t1);font-size:16px;cursor:pointer;transition:background var(--transition);display:flex;align-items:center;justify-content:center}
+.qty-box button:hover{background:var(--bg4)}
+.qty-box span{width:32px;text-align:center;font-size:13.5px;font-weight:600;color:var(--t1)}
+.ci-price{font-size:15px;font-weight:700;color:var(--green);margin-left:auto;flex-shrink:0}
+.ci-remove{width:30px;height:30px;background:transparent;border:1px solid transparent;border-radius:var(--radius-sm);color:var(--t3);cursor:pointer;transition:all var(--transition);display:flex;align-items:center;justify-content:center}
+.ci-remove:hover{background:rgba(255,77,109,.1);border-color:var(--red);color:var(--red)}
+.ci-remove svg{width:14px;height:14px}
+
+.cart-summary{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:var(--radius-lg);padding:20px;
+  position:sticky;top:0;
+}
+.cs-title{font-size:15px;font-weight:700;color:var(--white);margin-bottom:16px}
+.cs-row{display:flex;justify-content:space-between;font-size:13.5px;padding:7px 0;color:var(--t2)}
+.cs-row.disc{color:var(--red)}
+.cs-row.total{font-size:15px;font-weight:700;color:var(--white);border-top:1px solid var(--border);margin-top:8px;padding-top:12px}
+.cs-row span:last-child{font-weight:500;color:var(--t1)}
+.cs-row.total span:last-child{color:var(--green)}
+.cs-row.disc span:last-child{color:var(--red)}
+.delivery-opts{display:flex;flex-direction:column;gap:8px;margin:16px 0}
+.d-opt{
+  display:flex;align-items:center;gap:10px;
+  padding:10px 12px;border-radius:var(--radius-sm);
+  border:1px solid var(--border);background:var(--bg3);
+  cursor:pointer;transition:all var(--transition);
+}
+.d-opt:hover{border-color:var(--border2)}
+.d-opt.sel{border-color:var(--green);background:rgba(0,214,143,.08)}
+.d-opt-icon{width:32px;height:32px;border-radius:var(--radius-sm);background:var(--bg4);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.d-opt-icon svg{width:16px;height:16px;color:var(--green)}
+.d-opt-info{flex:1}
+.d-opt-name{font-size:13px;font-weight:600;color:var(--t1)}
+.d-opt-desc{font-size:11.5px;color:var(--t3)}
+.d-opt-price{font-size:12.5px;font-weight:700;color:var(--green)}
+.coupon-row{display:flex;gap:8px;margin-bottom:12px}
+.coupon-input{
+  flex:1;padding:9px 12px;background:var(--bg3);
+  border:1px solid var(--border);border-radius:var(--radius-sm);
+  color:var(--t1);font-size:13px;font-family:'Inter',sans-serif;
+}
+.coupon-input::placeholder{color:var(--t3)}
+.coupon-input:focus{outline:none;border-color:var(--green)}
+.coupon-btn{
+  padding:9px 14px;background:var(--bg3);border:1px solid var(--green);
+  border-radius:var(--radius-sm);color:var(--green);font-size:13px;
+  font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;
+}
+
+/* ── WISHLIST PAGE ──────────────────────────── */
+.wishlist-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px}
+.wl-card{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:var(--radius-lg);overflow:hidden;
+  transition:all var(--transition);
+}
+.wl-card:hover{border-color:var(--border2);transform:translateY(-1px)}
+.wl-img{height:120px;background:var(--bg3);display:flex;align-items:center;justify-content:center;font-size:48px}
+.wl-body{padding:12px}
+.wl-name{font-size:13.5px;font-weight:600;color:var(--t1);margin-bottom:3px}
+.wl-price{font-size:14px;font-weight:700;color:var(--green);margin-bottom:10px}
+.wl-actions{display:grid;grid-template-columns:1fr 36px;gap:6px}
+.wl-actions .btn-primary{height:32px;font-size:12px;padding:0 12px;justify-content:center}
+.wl-rm{width:36px;height:32px;background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius-sm);cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--t3);transition:all var(--transition)}
+.wl-rm:hover{background:rgba(255,77,109,.1);border-color:var(--red);color:var(--red)}
+.wl-rm svg{width:14px;height:14px}
+
+/* ── ORDERS PAGE ────────────────────────────── */
+.orders-list{display:flex;flex-direction:column;gap:14px}
+.order-card{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:var(--radius-lg);padding:18px;
+  transition:border-color var(--transition);
+}
+.order-card:hover{border-color:var(--border2)}
+.order-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px}
+.order-id{font-size:14px;font-weight:700;color:var(--white)}
+.order-date{font-size:12px;color:var(--t3)}
+.order-status{font-size:11.5px;font-weight:700;padding:4px 10px;border-radius:20px}
+.status-confirmed{background:rgba(0,214,143,.15);color:var(--green)}
+.status-processing{background:rgba(255,184,0,.15);color:var(--amber)}
+.status-delivered{background:rgba(123,92,240,.15);color:var(--purple2)}
+.order-items-row{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap}
+.order-item-chip{display:flex;align-items:center;gap:6px;padding:5px 10px;background:var(--bg3);border-radius:var(--radius-sm);font-size:12px;color:var(--t2)}
+.delivery-track{display:flex;align-items:center;gap:0;margin-top:4px;overflow-x:auto}
+.track-step{display:flex;flex-direction:column;align-items:center;gap:4px;flex:1;min-width:70px}
+.track-dot{width:20px;height:20px;border-radius:50%;border:2px solid var(--border2);background:var(--bg3);display:flex;align-items:center;justify-content:center;z-index:1;position:relative;transition:all var(--transition)}
+.track-dot.done{background:var(--green);border-color:var(--green)}
+.track-dot.done svg{width:10px;height:10px;stroke:var(--bg)}
+.track-dot svg{width:10px;height:10px;stroke:var(--t3)}
+.track-dot.active{border-color:var(--green);background:rgba(0,214,143,.2)}
+.track-line{height:2px;flex:1;background:var(--border);position:relative}
+.track-line.done{background:var(--green)}
+.track-label{font-size:10px;color:var(--t3);text-align:center;white-space:nowrap}
+.track-label.done{color:var(--green)}
+.track-row{display:flex;align-items:center;width:100%;margin-bottom:4px}
+.order-footer{display:flex;align-items:center;justify-content:space-between;margin-top:14px;padding-top:14px;border-top:1px solid var(--border)}
+.order-total{font-size:15px;font-weight:700;color:var(--white)}
+.order-total small{font-size:12px;color:var(--t3);font-weight:400}
+
+/* ── CHECKOUT MODAL ─────────────────────────── */
+.modal-bg{
+  position:fixed;inset:0;background:rgba(0,0,0,.7);
+  z-index:200;display:none;align-items:center;justify-content:center;
+  backdrop-filter:blur(4px);
+}
+.modal-bg.open{display:flex}
+.modal-box{
+  background:var(--bg2);border:1px solid var(--border);
+  border-radius:var(--radius-xl);width:440px;max-width:95vw;
+  max-height:90vh;overflow-y:auto;
+}
+.modal-head{
+  padding:20px 24px 16px;border-bottom:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;
+  position:sticky;top:0;background:var(--bg2);z-index:1;
+}
+.modal-head h3{font-size:17px;font-weight:700;color:var(--white)}
+.modal-close{width:32px;height:32px;background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius-sm);cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--t2)}
+.modal-close:hover{color:var(--t1)}
+.modal-close svg{width:16px;height:16px}
+.modal-body{padding:20px 24px}
+.steps-bar{display:flex;align-items:center;gap:0;margin-bottom:24px}
+.step-item{display:flex;flex-direction:column;align-items:center;gap:4px;flex:1}
+.step-num{width:28px;height:28px;border-radius:50%;background:var(--bg3);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--t3);transition:all var(--transition)}
+.step-num.active{background:var(--green);border-color:var(--green);color:var(--bg)}
+.step-num.done{background:rgba(0,214,143,.2);border-color:var(--green);color:var(--green)}
+.step-lbl{font-size:10.5px;color:var(--t3)}
+.step-lbl.active{color:var(--green)}
+.step-con{height:2px;flex:1;background:var(--border);margin-bottom:16px;transition:background var(--transition)}
+.step-con.done{background:var(--green)}
+.modal-section-title{font-size:13px;font-weight:600;color:var(--t2);text-transform:uppercase;letter-spacing:.06em;margin-bottom:12px}
+.form-group{margin-bottom:14px}
+.form-label{font-size:12.5px;color:var(--t2);margin-bottom:6px;display:block}
+.form-input{
+  width:100%;padding:10px 14px;
+  background:var(--bg3);border:1px solid var(--border);
+  border-radius:var(--radius-sm);color:var(--t1);
+  font-size:13.5px;font-family:'Inter',sans-serif;
+}
+.form-input:focus{outline:none;border-color:var(--green)}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.modal-d-opts{display:flex;flex-direction:column;gap:8px;margin-bottom:16px}
+.payment-methods{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px}
+.pay-method{
+  padding:10px;background:var(--bg3);border:1px solid var(--border);
+  border-radius:var(--radius-sm);cursor:pointer;text-align:center;
+  transition:all var(--transition);font-size:12px;color:var(--t2);
+}
+.pay-method:hover{border-color:var(--border2)}
+.pay-method.sel{border-color:var(--green);color:var(--green);background:rgba(0,214,143,.08)}
+.pay-method .pm-icon{font-size:20px;margin-bottom:4px}
+.modal-total-box{
+  background:var(--bg3);border:1px solid var(--border);
+  border-radius:var(--radius);padding:14px;margin-bottom:16px;
+}
+.order-success{text-align:center;padding:20px 0}
+.success-icon{width:64px;height:64px;background:rgba(0,214,143,.15);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 16px}
+.success-icon svg{width:32px;height:32px;stroke:var(--green)}
+
+/* ── PREMIUM MODAL ──────────────────────────── */
+.premium-features{display:flex;flex-direction:column;gap:10px;margin-bottom:20px}
+.pf-row{display:flex;align-items:center;gap:10px;font-size:13.5px;color:var(--t2)}
+.pf-row svg{width:16px;height:16px;stroke:var(--green);flex-shrink:0}
+.pricing-cards{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px}
+.pricing-card{
+  background:var(--bg3);border:1px solid var(--border);
+  border-radius:var(--radius);padding:14px;text-align:center;cursor:pointer;
+  transition:all var(--transition);
+}
+.pricing-card:hover{border-color:var(--border2)}
+.pricing-card.sel{border-color:var(--purple);background:rgba(123,92,240,.1)}
+.pricing-card .pc-badge{font-size:10px;font-weight:700;background:var(--purple);color:#fff;border-radius:20px;padding:2px 8px;margin-bottom:8px;display:inline-block}
+.pricing-card .pc-price{font-size:22px;font-weight:800;color:var(--white);margin-bottom:2px}
+.pricing-card .pc-period{font-size:11.5px;color:var(--t3)}
+.pricing-card .pc-save{font-size:11px;color:var(--green);font-weight:600;margin-top:4px}
+
+/* ── TOAST ──────────────────────────────────── */
+.toast{
+  position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);
+  background:var(--bg2);border:1px solid var(--border);
+  border-radius:var(--radius);padding:10px 18px;
+  font-size:13px;color:var(--t1);z-index:999;
+  display:flex;align-items:center;gap:8px;
+  transition:transform .3s cubic-bezier(.4,0,.2,1);
+  white-space:nowrap;box-shadow:var(--shadow);
+}
+.toast.show{transform:translateX(-50%) translateY(0)}
+.toast-dot{width:8px;height:8px;border-radius:50%;background:var(--green);flex-shrink:0}
+
+/* ── EMPTY STATE ─────────────────────────────── */
+.empty-state{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:60px 20px;text-align:center;
+}
+.empty-icon{font-size:52px;margin-bottom:14px;opacity:.5}
+.empty-state h3{font-size:17px;font-weight:600;color:var(--t1);margin-bottom:6px}
+.empty-state p{font-size:13.5px;color:var(--t3);margin-bottom:20px}
+
+/* ── SEARCH HIGHLIGHT ──────────────────────── */
+.search-results-bar{
+  padding:12px 16px;background:var(--bg2);border-radius:var(--radius);
+  border:1px solid var(--border);font-size:13.5px;color:var(--t2);
+  display:flex;align-items:center;justify-content:space-between;
+}
+.clear-search{font-size:12.5px;color:var(--green);cursor:pointer;background:none;border:none;font-family:'Inter',sans-serif}
+
+/* ── STATS ROW ──────────────────────────────── */
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.stat-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:14px 16px}
+.stat-value{font-size:22px;font-weight:800;color:var(--white);margin-bottom:2px}
+.stat-label{font-size:11.5px;color:var(--t3)}
+.stat-icon{width:32px;height:32px;border-radius:var(--radius-sm);display:flex;align-items:center;justify-content:center;margin-bottom:10px}
+.stat-icon svg{width:16px;height:16px}
+.si-green{background:rgba(0,214,143,.15);color:var(--green)}
+.si-purple{background:rgba(123,92,240,.15);color:var(--purple2)}
+.si-red{background:rgba(255,77,109,.15);color:var(--red)}
+.si-amber{background:rgba(255,184,0,.15);color:var(--amber)}
+
+/* ── SCROLLABLE SECTION ─────────────────────── */
+.scroll-section{overflow:hidden}
+</style>
+</head>
+<body>
+
+<div class="app-shell">
+
+<!-- ══ TOPBAR ══════════════════════════════════ -->
+<header class="topbar">
+  <a class="brand" href="#" onclick="showPage('home');return false">
+    <div class="brand-icon">
+      <svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4zM3 6h18M16 10a4 4 0 01-8 0"/></svg>
+    </div>
+    <span class="brand-name">Shop<span>Wave</span></span>
+  </a>
+
+  <div class="search-bar">
+    <span class="si">
+      <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+    </span>
+    <input type="text" id="searchInput" placeholder="Search products, brands, categories…" oninput="handleSearch(this.value)">
+  </div>
+
+  <div class="topbar-right">
+    <button class="nav-btn" id="btnHome" onclick="showPage('home')">
+      <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m3 9 9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      Home
+    </button>
+    <button class="nav-btn" id="btnCatalog" onclick="showPage('catalog')">
+      <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+      Catalog
+    </button>
+    <button class="nav-btn" id="btnWishlist" onclick="showPage('wishlist')">
+      <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+      Wishlist
+      <span class="badge" id="wlBadge" style="display:none">0</span>
+    </button>
+    <button class="nav-btn" id="btnCart" onclick="showPage('cart')">
+      <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6"/></svg>
+      Cart
+      <span class="badge" id="cartBadge" style="display:none">0</span>
+    </button>
+    <button class="nav-btn" id="btnOrders" onclick="showPage('orders')">
+      <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+      Orders
+    </button>
+    <button class="nav-btn premium-btn" onclick="openModal('premiumModal')">
+      <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+      Premium
+    </button>
+  </div>
+</header>
+
+<!-- ══ SIDEBAR ══════════════════════════════════ -->
+<aside class="sidebar">
+  <div class="sidebar-section">
+    <div class="sidebar-label">Categories</div>
+    <div id="catList"></div>
+  </div>
+
+  <div class="sidebar-divider"></div>
+
+  <div class="filter-section">
+    <div class="filter-label">Sort by</div>
+    <select class="sort-select" id="sortSelect" onchange="applySort(this.value)">
+      <option value="default">Featured</option>
+      <option value="price-asc">Price: Low → High</option>
+      <option value="price-desc">Price: High → Low</option>
+      <option value="rating">Top Rated</option>
+      <option value="discount">Biggest Discount</option>
+      <option value="newest">Newest</option>
+    </select>
+  </div>
+
+  <div class="filter-section" style="padding-top:0">
+    <div class="filter-label">Price range (₹)</div>
+    <div class="price-inputs">
+      <input class="price-input" type="number" id="priceMin" placeholder="Min" oninput="applyFilters()">
+      <input class="price-input" type="number" id="priceMax" placeholder="Max" oninput="applyFilters()">
+    </div>
+  </div>
+
+  <div class="sidebar-divider"></div>
+
+  <div class="filter-section" style="padding-top:0">
+    <div class="filter-label">Undo / Redo cart</div>
+    <div class="undo-redo">
+      <button id="undoBtn" onclick="undo()" disabled>
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 7v6h6"/><path d="M21 17a9 9 0 00-9-9 9 9 0 00-6 2.3L3 13"/></svg>
+        Undo
+      </button>
+      <button id="redoBtn" onclick="redo()" disabled>
+        Redo
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 7v6h-6"/><path d="M3 17a9 9 0 019-9 9 9 0 016 2.3l3 2.7"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <div class="filter-section" style="padding-top:0">
+    <div class="filter-label">Quick stats</div>
+    <div style="font-size:12px;color:var(--t3);line-height:1.8;padding:0 4px">
+      <div>Cart: <span id="sideCartTotal" style="color:var(--green);font-weight:600">₹0</span></div>
+      <div>Wishlist: <span id="sideWlCount" style="color:var(--purple2);font-weight:600">0 items</span></div>
+      <div>Savings: <span id="sideSavings" style="color:var(--red);font-weight:600">₹0</span></div>
+    </div>
+  </div>
+</aside>
+
+<!-- ══ MAIN CONTENT ══════════════════════════════ -->
+<main class="main" id="mainContent">
+
+  <!-- HOME PAGE -->
+  <div class="page active" id="page-home">
+    <div class="hero">
+      <div class="hero-text">
+        <h1>The smartest way<br>to <span>shop online</span></h1>
+        <p>Discover thousands of products with exclusive deals, premium delivery, and personalised recommendations built just for you.</p>
+        <div class="hero-actions">
+          <button class="btn-primary" onclick="showPage('catalog')">
+            <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+            Browse catalog
+          </button>
+          <button class="btn-outline" onclick="openModal('premiumModal')">
+            <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            Get Premium
+          </button>
+        </div>
+      </div>
+      <div class="hero-badges">
+        <div class="hero-badge">
+          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" width="16" height="16"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          Free delivery on orders ₹999+
+        </div>
+        <div class="hero-badge">
+          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" width="16" height="16"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          Secure payments guaranteed
+        </div>
+        <div class="hero-badge">
+          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" width="16" height="16"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          Track orders in real time
+        </div>
+      </div>
+    </div>
+
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="stat-icon si-green"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 7H4a2 2 0 00-2 2v6a2 2 0 002 2h16a2 2 0 002-2V9a2 2 0 00-2-2z"/><path d="M16 21V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v16"/></svg></div>
+        <div class="stat-value">16</div>
+        <div class="stat-label">Products in catalog</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon si-purple"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
+        <div class="stat-value">8</div>
+        <div class="stat-label">Categories</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon si-red"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></div>
+        <div class="stat-value" id="statDiscount">Up to 40%</div>
+        <div class="stat-label">Max discount today</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon si-amber"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg></div>
+        <div class="stat-value">Free</div>
+        <div class="stat-label">Delivery on ₹999+</div>
+      </div>
+    </div>
+
+    <div id="recentSection" style="display:none">
+      <div class="section-hd"><h2>Recently viewed</h2><a onclick="clearRecent()">Clear all</a></div>
+      <div class="chips-row" id="recentChips"></div>
+    </div>
+
+    <div>
+      <div class="section-hd"><h2>Recommended for you</h2><a onclick="showPage('catalog')">See all →</a></div>
+      <div class="h-scroll" id="recommendRow"></div>
+    </div>
+
+    <div>
+      <div class="section-hd"><h2>Top deals today</h2><a onclick="showPage('catalog');applySort('discount')">View all deals →</a></div>
+      <div class="products-grid" id="homeDealsGrid"></div>
+    </div>
+  </div>
+
+  <!-- CATALOG PAGE -->
+  <div class="page" id="page-catalog">
+    <div id="searchResultsBar" style="display:none">
+      <div class="search-results-bar">
+        <span>Search results for <strong id="searchTermDisplay" style="color:var(--t1)"></strong> — <span id="searchCount"></span> found</span>
+        <button class="clear-search" onclick="clearSearch()">Clear search ✕</button>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+      <h2 style="font-size:18px;font-weight:700;color:var(--white)" id="catalogHeading">All products</h2>
+      <span style="font-size:13px;color:var(--t3)" id="catalogCount"></span>
+      <div style="margin-left:auto;display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+        <span style="font-size:12.5px;color:var(--t3)">Filter:</span>
+        <div id="activeCatChips"></div>
+      </div>
+    </div>
+    <div class="products-grid" id="catalogGrid"></div>
+  </div>
+
+  <!-- CART PAGE -->
+  <div class="page" id="page-cart">
+    <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px">
+      <h2 style="font-size:18px;font-weight:700;color:var(--white)">Shopping cart</h2>
+      <button class="btn-outline" onclick="undo()" id="cartUndoBtn" style="font-size:12.5px;height:34px;padding:0 14px">
+        <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 7v6h6"/><path d="M21 17a9 9 0 00-9-9 9 9 0 00-6 2.3L3 13"/></svg>
+        Undo last action
+      </button>
+    </div>
+    <div class="cart-layout" id="cartLayout">
+      <div class="cart-items-col" id="cartItemsCol"></div>
+      <div id="cartSummaryCol"></div>
+    </div>
+  </div>
+
+  <!-- WISHLIST PAGE -->
+  <div class="page" id="page-wishlist">
+    <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px">
+      <h2 style="font-size:18px;font-weight:700;color:var(--white)">Wishlist</h2>
+      <span style="font-size:13px;color:var(--t3)" id="wishlistCount"></span>
+    </div>
+    <div class="wishlist-grid" id="wishlistGrid"></div>
+  </div>
+
+  <!-- ORDERS PAGE -->
+  <div class="page" id="page-orders">
+    <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px">
+      <h2 style="font-size:18px;font-weight:700;color:var(--white)">My orders</h2>
+      <span style="font-size:13px;color:var(--t3)" id="ordersCount"></span>
+    </div>
+    <div class="orders-list" id="ordersList"></div>
+  </div>
+
+</main>
+</div>
+
+<!-- ══ CHECKOUT MODAL ════════════════════════ -->
+<div class="modal-bg" id="checkoutModal">
+  <div class="modal-box">
+    <div class="modal-head">
+      <h3 id="checkoutTitle">Checkout</h3>
+      <button class="modal-close" onclick="closeModal('checkoutModal')"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    </div>
+    <div class="modal-body" id="checkoutBody"></div>
+  </div>
+</div>
+
+<!-- ══ PREMIUM MODAL ════════════════════════ -->
+<div class="modal-bg" id="premiumModal">
+  <div class="modal-box">
+    <div class="modal-head">
+      <h3>ShopWave Premium</h3>
+      <button class="modal-close" onclick="closeModal('premiumModal')"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    </div>
+    <div class="modal-body">
+      <div style="text-align:center;margin-bottom:20px">
+        <div style="font-size:40px;margin-bottom:8px">✦</div>
+        <div style="font-size:15px;font-weight:700;color:var(--white);margin-bottom:4px">Unlock unlimited benefits</div>
+        <div style="font-size:13px;color:var(--t3)">Everything you need, delivered faster and cheaper</div>
+      </div>
+      <div class="premium-features">
+        <div class="pf-row"><svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Free express delivery on every order</div>
+        <div class="pf-row"><svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Exclusive member-only discounts (extra 5–15%)</div>
+        <div class="pf-row"><svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Same-day delivery in 50+ cities</div>
+        <div class="pf-row"><svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Early access to flash sales & new arrivals</div>
+        <div class="pf-row"><svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Priority 24/7 customer support</div>
+        <div class="pf-row"><svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Free returns & extended warranty</div>
+      </div>
+      <div class="pricing-cards">
+        <div class="pricing-card" onclick="selectPlan('monthly',this)">
+          <div class="pc-price">₹299</div>
+          <div class="pc-period">per month</div>
+        </div>
+        <div class="pricing-card sel" onclick="selectPlan('yearly',this)">
+          <div class="pc-badge">BEST VALUE</div>
+          <div class="pc-price">₹2,499</div>
+          <div class="pc-period">per year</div>
+          <div class="pc-save">Save ₹1,089 (30%)</div>
+        </div>
+      </div>
+      <button class="btn-primary" style="width:100%;height:44px;justify-content:center;font-size:14px" onclick="activatePremium()">
+        Start Premium membership
+      </button>
+      <div style="text-align:center;font-size:12px;color:var(--t3);margin-top:10px">Cancel anytime. No hidden fees.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ TOAST ════════════════════════════════ -->
+<div class="toast" id="toast">
+  <div class="toast-dot"></div>
+  <span id="toastMsg"></span>
+</div>
+
+<script>
+
+  if(localStorage.getItem("shopwaveLogin") !== "true"){
+
+    window.location.href = "login.html";
+
+}
+// ═══════════════════════════════════════════════
+// DATA
+// ═══════════════════════════════════════════════
+let PRODUCTS = [];
+
+async function loadProducts() {
+
+    const token = localStorage.getItem("token");
+
+    try {
+
+        const response = await fetch(
+            "http://localhost:8032/products",
+            {
+                headers: {
+                    "Authorization": "Bearer " + token
+                }
+            }
+        );
+
+        PRODUCTS = await response.json();
+
+        renderCats();
+        renderHome();
+        renderCatalog();
+
+    } catch(error) {
+
+        console.error(error);
+        alert("Failed to load products");
+
+    }
+}
+
+const CATS = [
+  {name:"All",emoji:"✦"},
+  {name:"Electronics",emoji:"💻"},
+  {name:"Sports",emoji:"⚽"},
+  {name:"Fashion",emoji:"👗"},
+  {name:"Kitchen",emoji:"🍳"},
+  {name:"Accessories",emoji:"💍"},
+  {name:"Home",emoji:"🏠"},
+  {name:"Beauty",emoji:"💄"}
+];
+
+// ═══════════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════════
+let cart = [], wishlist = [], orders = [], historyStack = [], futureStack = [];
+let recentViewed = [], activeCat = "All", sortBy = "default";
+let priceMin = 0, priceMax = Infinity, searchQ = "", isPremium = false;
+let selectedPlan = "yearly", selectedDelivery = "standard", checkoutStep = 1;
+
+// ═══════════════════════════════════════════════
+// HISTORY
+// ═══════════════════════════════════════════════
+function saveState() {
+  historyStack.push(JSON.stringify(cart));
+  futureStack = [];
+  updateUndoRedo();
+}
+function undo() {
+  if (!historyStack.length) return;
+  futureStack.push(JSON.stringify(cart));
+  cart = JSON.parse(historyStack.pop());
+  updateAll();
+  updateUndoRedo();
+  toast("Cart action undone");
+}
+function redo() {
+  if (!futureStack.length) return;
+  historyStack.push(JSON.stringify(cart));
+  cart = JSON.parse(futureStack.pop());
+  updateAll();
+  updateUndoRedo();
+  toast("Cart action redone");
+}
+function updateUndoRedo() {
+  document.getElementById("undoBtn").disabled = !historyStack.length;
+  document.getElementById("redoBtn").disabled = !futureStack.length;
+  const cb = document.getElementById("cartUndoBtn");
+  if (cb) cb.disabled = !historyStack.length;
+}
+
+// ═══════════════════════════════════════════════
+// CART ACTIONS
+// ═══════════════════════════════════════════════
+function addToCart(id) {
+  saveState();
+  const p = PRODUCTS.find(x => x.id === id);
+  const ex = cart.find(x => x.id === id);
+  if (ex) ex.qty++;
+  else cart.push({...p, qty: 1});
+  updateAll();
+  addRecent(id);
+  toast(p.name + " added to cart 🛒");
+}
+function removeFromCart(id) {
+  saveState();
+  cart = cart.filter(x => x.id !== id);
+  updateAll();
+  toast("Item removed from cart");
+}
+function changeQty(id, d) {
+  saveState();
+  const ex = cart.find(x => x.id === id);
+  if (ex) {
+    ex.qty = Math.max(0, ex.qty + d);
+    if (ex.qty === 0) cart = cart.filter(x => x.id !== id);
+  }
+  updateAll();
+}
+
+// ═══════════════════════════════════════════════
+// WISHLIST ACTIONS
+// ═══════════════════════════════════════════════
+function toggleWishlist(id) {
+  const p = PRODUCTS.find(x => x.id === id);
+  const idx = wishlist.findIndex(x => x.id === id);
+  if (idx >= 0) { wishlist.splice(idx, 1); toast("Removed from wishlist"); }
+  else { wishlist.push(p); toast(p.name + " saved to wishlist ♥"); }
+  updateAll();
+}
+function moveToCart(id) {
+  wishlist = wishlist.filter(x => x.id !== id);
+  addToCart(id);
+}
+
+// ═══════════════════════════════════════════════
+// RECENT / SEARCH / FILTER
+// ═══════════════════════════════════════════════
+function addRecent(id) {
+  recentViewed = recentViewed.filter(x => x !== id);
+  recentViewed.unshift(id);
+  if (recentViewed.length > 6) recentViewed = recentViewed.slice(0, 6);
+  renderRecent();
+}
+function clearRecent() { recentViewed = []; renderRecent(); }
+function handleSearch(v) {
+  searchQ = v.trim().toLowerCase();
+  if (searchQ) showPage('catalog');
+  renderCatalog();
+  renderSearchBar();
+}
+function clearSearch() {
+  searchQ = "";
+  document.getElementById("searchInput").value = "";
+  renderCatalog();
+  renderSearchBar();
+}
+function applySort(v) { sortBy = v; renderCatalog(); }
+function applyFilters() {
+  priceMin = +document.getElementById("priceMin").value || 0;
+  priceMax = +document.getElementById("priceMax").value || Infinity;
+  renderCatalog();
+}
+function selectCat(c) {
+  activeCat = c;
+  showPage('catalog');
+  renderCatalog();
+  renderCats();
+}
+
+function filterProducts() {
+  let list = [...PRODUCTS];
+  if (searchQ) list = list.filter(p =>
+    p.name.toLowerCase().includes(searchQ) ||
+    p.cat.toLowerCase().includes(searchQ) ||
+    p.tags.some(t => t.includes(searchQ))
+  );
+  if (activeCat !== "All") list = list.filter(p => p.cat === activeCat);
+  list = list.filter(p => p.price >= priceMin && p.price <= priceMax);
+  if (sortBy === "price-asc") list.sort((a,b) => a.price - b.price);
+  else if (sortBy === "price-desc") list.sort((a,b) => b.price - a.price);
+  else if (sortBy === "rating") list.sort((a,b) => b.rating - a.rating);
+  else if (sortBy === "discount") list.sort((a,b) => b.discount - a.discount);
+  else if (sortBy === "newest") list.sort((a,b) => (b.isNew?1:0)-(a.isNew?1:0));
+  return list;
+}
+
+// ═══════════════════════════════════════════════
+// RENDER — CATEGORIES
+// ═══════════════════════════════════════════════
+function renderCats() {
+  document.getElementById("catList").innerHTML = CATS.map(c => {
+    const count = c.name === "All" ? PRODUCTS.length : PRODUCTS.filter(p => p.cat === c.name).length;
+    return `<button class="cat-btn${c.name === activeCat ? " active" : ""}" onclick="selectCat('${c.name}')">
+      <span class="cat-emoji">${c.emoji}</span>${c.name}<span class="cat-count">${count}</span>
+    </button>`;
+  }).join("");
+}
+
+// ═══════════════════════════════════════════════
+// RENDER — PRODUCT CARD
+// ═══════════════════════════════════════════════
+function productCard(p) {
+  const inWish = wishlist.some(x => x.id === p.id);
+  const inCart = cart.find(x => x.id === p.id);
+  const stars = "★".repeat(Math.floor(p.rating)) + "☆".repeat(5 - Math.floor(p.rating));
+  return `<div class="product-card" onclick="viewProduct(${p.id})">
+    <div class="pc-img">
+      ${p.emoji}
+      <div class="pc-tags">
+        ${p.premium ? `<span class="tag tag-prem">✦ PREMIUM</span>` : `<span class="tag tag-disc">-${p.discount}%</span>`}
+        ${p.isNew ? `<span class="tag tag-new">NEW</span>` : ""}
+      </div>
+      <button class="wl-btn${inWish ? " active" : ""}" onclick="event.stopPropagation();toggleWishlist(${p.id})" aria-label="Wishlist">
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+      </button>
+    </div>
+    <div class="pc-body">
+      <div class="pc-cat">${p.cat}</div>
+      <div class="pc-name">${p.name}</div>
+      <div class="pc-stars"><span>${stars}</span><small>${p.rating}</small></div>
+      <div class="pc-pricing">
+        <span class="pc-price">₹${p.price.toLocaleString()}</span>
+        <span class="pc-old">₹${p.oldPrice.toLocaleString()}</span>
+        <span class="pc-save">-${p.discount}%</span>
+      </div>
+      <button class="pc-add${inCart ? " in-cart" : ""}" onclick="event.stopPropagation();addToCart(${p.id})">
+        <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6"/></svg>
+        ${inCart ? `In cart (${inCart.qty})` : "Add to cart"}
+      </button>
+    </div>
+  </div>`;
+}
+
+// ═══════════════════════════════════════════════
+// RENDER — HOME
+// ═══════════════════════════════════════════════
+function renderHome() {
+  // Recommendations (based on recent or top rated)
+  const recs = recentViewed.length > 0
+    ? PRODUCTS.filter(p => !recentViewed.includes(p.id)).sort(() => Math.random() - 0.5).slice(0, 8)
+    : PRODUCTS.filter(p => p.rating >= 4.5).slice(0, 8);
+  document.getElementById("recommendRow").innerHTML = recs.map(p => `
+    <div class="rec-card" onclick="addToCart(${p.id})">
+      <div class="rec-emoji">${p.emoji}</div>
+      <div class="rec-name">${p.name}</div>
+      <div class="rec-price">₹${p.price.toLocaleString()}</div>
+    </div>`).join("");
+
+  // Top deals (highest discount)
+  const deals = [...PRODUCTS].sort((a, b) => b.discount - a.discount).slice(0, 4);
+  document.getElementById("homeDealsGrid").innerHTML = deals.map(p => productCard(p)).join("");
+}
+
+function renderRecent() {
+  const sec = document.getElementById("recentSection");
+  if (!recentViewed.length) { sec.style.display = "none"; return; }
+  sec.style.display = "block";
+  document.getElementById("recentChips").innerHTML = recentViewed.map(id => {
+    const p = PRODUCTS.find(x => x.id === id);
+    return `<div class="chip" onclick="addToCart(${id})">${p.emoji} ${p.name}</div>`;
+  }).join("");
+}
+
+function viewProduct(id) {
+  addRecent(id);
+  renderRecent();
+  renderHome();
+}
+
+// ═══════════════════════════════════════════════
+// RENDER — CATALOG
+// ═══════════════════════════════════════════════
+function renderCatalog() {
+  const list = filterProducts();
+  document.getElementById("catalogCount").textContent = `${list.length} products`;
+  document.getElementById("catalogHeading").textContent = activeCat === "All" ? "All products" : activeCat;
+
+  // Active cat chip
+  const chip = activeCat !== "All"
+    ? `<span class="chip" style="font-size:12px;padding:4px 10px">${activeCat} <span onclick="selectCat('All')" style="margin-left:4px;cursor:pointer;color:var(--red)">✕</span></span>`
+    : "";
+  document.getElementById("activeCatChips").innerHTML = chip;
+
+  if (!list.length) {
+    document.getElementById("catalogGrid").innerHTML = `
+      <div class="empty-state" style="grid-column:1/-1">
+        <div class="empty-icon">🔍</div>
+        <h3>No products found</h3>
+        <p>Try a different search or category</p>
+        <button class="btn-primary" onclick="clearSearch();selectCat('All')">Show all products</button>
+      </div>`;
+    return;
+  }
+  document.getElementById("catalogGrid").innerHTML = list.map(p => productCard(p)).join("");
+}
+
+function renderSearchBar() {
+  const bar = document.getElementById("searchResultsBar");
+  if (searchQ) {
+    bar.style.display = "block";
+    document.getElementById("searchTermDisplay").textContent = `"${searchQ}"`;
+    document.getElementById("searchCount").textContent = filterProducts().length + " products";
+  } else {
+    bar.style.display = "none";
+  }
+}
+
+// ═══════════════════════════════════════════════
+// RENDER — CART
+// ═══════════════════════════════════════════════
+function renderCart() {
+  const col = document.getElementById("cartItemsCol");
+  const sum = document.getElementById("cartSummaryCol");
+
+  if (!cart.length) {
+    document.getElementById("cartLayout").innerHTML = `
+      <div class="empty-state" style="grid-column:1/-1">
+        <div class="empty-icon">🛒</div>
+        <h3>Your cart is empty</h3>
+        <p>Add products from the catalog to get started</p>
+        <button class="btn-primary" onclick="showPage('catalog')">Browse products</button>
+      </div>`;
+    return;
+  }
+
+  document.getElementById("cartLayout").innerHTML = `<div class="cart-items-col" id="cartItemsCol"></div><div id="cartSummaryCol"></div>`;
+
+  const subtotal = cart.reduce((s, i) => s + i.price * i.qty, 0);
+  const delivery = selectedDelivery === "express" ? 199 : selectedDelivery === "premium" ? (isPremium ? 0 : 499) : (subtotal >= 999 ? 0 : 49);
+  const memberDisc = isPremium ? Math.round(subtotal * 0.05) : 0;
+  const total = subtotal + delivery - memberDisc;
+
+  document.getElementById("cartItemsCol").innerHTML = cart.map(item => `
+    <div class="cart-item">
+      <div class="ci-img">${item.emoji}</div>
+      <div class="ci-info">
+        <div class="ci-name">${item.name}</div>
+        <div class="ci-cat">${item.cat} · ₹${item.price.toLocaleString()} each</div>
+        <div class="ci-controls">
+          <div class="qty-box">
+            <button onclick="changeQty(${item.id},-1)">−</button>
+            <span>${item.qty}</span>
+            <button onclick="changeQty(${item.id},1)">+</button>
+          </div>
+          <button class="ci-remove" onclick="removeFromCart(${item.id})" aria-label="Remove">
+            <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6m5 0V4h4v2"/></svg>
+          </button>
+        </div>
+      </div>
+      <div class="ci-price">₹${(item.price * item.qty).toLocaleString()}</div>
+    </div>`).join("");
+
+  document.getElementById("cartSummaryCol").innerHTML = `
+    <div class="cart-summary">
+      <div class="cs-title">Order summary</div>
+      <div style="margin-bottom:12px">
+        <div class="filter-label" style="font-size:11px;margin-bottom:8px">Delivery option</div>
+        <div class="delivery-opts">
+          <div class="d-opt${selectedDelivery==="standard"?" sel":""}" onclick="setDelivery('standard',this)">
+            <div class="d-opt-icon"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg></div>
+            <div class="d-opt-info"><div class="d-opt-name">Standard</div><div class="d-opt-desc">3–5 days</div></div>
+            <div class="d-opt-price">${subtotal>=999?"Free":"₹49"}</div>
+          </div>
+          <div class="d-opt${selectedDelivery==="express"?" sel":""}" onclick="setDelivery('express',this)">
+            <div class="d-opt-icon"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
+            <div class="d-opt-info"><div class="d-opt-name">Express</div><div class="d-opt-desc">Next day</div></div>
+            <div class="d-opt-price">₹199</div>
+          </div>
+          <div class="d-opt${selectedDelivery==="premium"?" sel":""}" onclick="setDelivery('premium',this)">
+            <div class="d-opt-icon"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
+            <div class="d-opt-info"><div class="d-opt-name">Same-day ${isPremium?"✦":""}</div><div class="d-opt-desc">By 8pm today</div></div>
+            <div class="d-opt-price">${isPremium?"Free":"₹499"}</div>
+          </div>
+        </div>
+      </div>
+      <div class="coupon-row">
+        <input class="coupon-input" type="text" placeholder="Coupon code" id="couponInput">
+        <button class="coupon-btn" onclick="applyCoupon()">Apply</button>
+      </div>
+      <div class="cs-row"><span>Subtotal (${cart.reduce((s,i)=>s+i.qty,0)} items)</span><span>₹${subtotal.toLocaleString()}</span></div>
+      <div class="cs-row"><span>Delivery</span><span>${delivery===0?"Free":"₹"+delivery}</span></div>
+      ${isPremium?`<div class="cs-row disc"><span>Premium discount (5%)</span><span>-₹${memberDisc.toLocaleString()}</span></div>`:""}
+      <div class="cs-row total"><span>Total</span><span>₹${total.toLocaleString()}</span></div>
+      <button class="btn-primary" style="width:100%;height:44px;margin-top:14px;justify-content:center;font-size:14px" onclick="startCheckout()">
+        Proceed to checkout →
+      </button>
+      ${!isPremium?`<div style="text-align:center;font-size:12px;color:var(--t3);margin-top:10px;cursor:pointer" onclick="openModal('premiumModal')">✦ Premium saves you ₹${Math.round(subtotal*.05).toLocaleString()} on this order</div>`:""}
+    </div>`;
+}
+
+function setDelivery(type) {
+  selectedDelivery = type;
+  renderCart();
+}
+
+function applyCoupon() {
+  const val = document.getElementById("couponInput").value.toUpperCase();
+  if (val === "WAVE10") toast("10% coupon applied! 🎉");
+  else toast("Invalid coupon code");
+}
+
+// ═══════════════════════════════════════════════
+// RENDER — WISHLIST
+// ═══════════════════════════════════════════════
+function renderWishlist() {
+  document.getElementById("wishlistCount").textContent = wishlist.length + " saved items";
+  if (!wishlist.length) {
+    document.getElementById("wishlistGrid").innerHTML = `
+      <div class="empty-state" style="grid-column:1/-1">
+        <div class="empty-icon">♥</div>
+        <h3>Your wishlist is empty</h3>
+        <p>Tap the heart icon on any product to save it here</p>
+        <button class="btn-primary" onclick="showPage('catalog')">Discover products</button>
+      </div>`;
+    return;
+  }
+  document.getElementById("wishlistGrid").innerHTML = wishlist.map(p => `
+    <div class="wl-card">
+      <div class="wl-img">${p.emoji}</div>
+      <div class="wl-body">
+        <div class="wl-name">${p.name}</div>
+        <div class="wl-price">₹${p.price.toLocaleString()} <span style="font-size:11px;color:var(--t3);text-decoration:line-through;font-weight:400">₹${p.oldPrice.toLocaleString()}</span></div>
+        <div class="wl-actions">
+          <button class="btn-primary" onclick="moveToCart(${p.id})">
+            <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6"/></svg>
+            Move to cart
+          </button>
+          <button class="wl-rm" onclick="toggleWishlist(${p.id})" aria-label="Remove">
+            <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6m5 0V4h4v2"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>`).join("");
+}
+
+// ═══════════════════════════════════════════════
+// RENDER — ORDERS
+// ═══════════════════════════════════════════════
+function renderOrders() {
+  document.getElementById("ordersCount").textContent = orders.length + " orders";
+  if (!orders.length) {
+    document.getElementById("ordersList").innerHTML = `
+      <div class="empty-state">
+        <div class="empty-icon">📦</div>
+        <h3>No orders yet</h3>
+        <p>Your placed orders will appear here with real-time tracking</p>
+        <button class="btn-primary" onclick="showPage('catalog')">Start shopping</button>
+      </div>`;
+    return;
+  }
+  const trackLabels = ["Placed","Processing","Shipped","Out for delivery","Delivered"];
+  document.getElementById("ordersList").innerHTML = orders.map((o, i) => {
+    const trackRow = trackLabels.map((lbl, ti) => {
+      const done = ti < o.trackStep;
+      const active = ti === o.trackStep;
+      return `<div class="track-step">
+        <div class="track-dot${done?" done":active?" active":""}">
+          ${done?`<svg fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>`:""}
+        </div>
+        <div class="track-label${done?" done":""}">${lbl}</div>
+      </div>${ti < trackLabels.length-1 ? `<div class="track-line${done?" done":""}"></div>` : ""}`;
+    }).join("");
+    const statusMap = {1:"Confirmed",2:"Processing",3:"Shipped",4:"Out for delivery",5:"Delivered"};
+    const statusClass = {1:"status-confirmed",2:"status-processing",3:"status-processing",4:"status-processing",5:"status-delivered"};
+    return `<div class="order-card">
+      <div class="order-header">
+        <div>
+          <div class="order-id">Order #${1000+orders.length-1-i}</div>
+          <div class="order-date">${o.date} · ${o.itemCount} items</div>
+        </div>
+        <span class="order-status ${statusClass[o.trackStep]||'status-confirmed'}">${statusMap[o.trackStep]||"Confirmed"}</span>
+      </div>
+      <div class="order-items-row">${o.items.map(it => `<div class="order-item-chip">${it.emoji} ${it.name}</div>`).join("")}</div>
+      <div style="display:flex;align-items:center;gap:0;width:100%">${trackRow}</div>
+      <div class="order-footer">
+        <div class="order-total">₹${o.total.toLocaleString()} <small>· ${o.delivery}</small></div>
+        <button class="btn-outline" style="font-size:12px;height:32px;padding:0 12px" onclick="simulateTrack(${i})">Track order</button>
+      </div>
+    </div>`;
+  }).join("");
+}
+
+function simulateTrack(idx) {
+  if (orders[idx].trackStep < 5) orders[idx].trackStep++;
+  renderOrders();
+  const steps = ["Order placed","Processing","Shipped","Out for delivery","Delivered! 🎉"];
+  toast(steps[orders[idx].trackStep - 1]);
+}
+
+// ═══════════════════════════════════════════════
+// CHECKOUT
+// ═══════════════════════════════════════════════
+function startCheckout() {
+  checkoutStep = 1;
+  renderCheckoutStep();
+  openModal("checkoutModal");
+}
+
+function renderCheckoutStep() {
+  const subtotal = cart.reduce((s, i) => s + i.price * i.qty, 0);
+  const delivery = selectedDelivery === "express" ? 199 : selectedDelivery === "premium" ? (isPremium ? 0 : 499) : (subtotal >= 999 ? 0 : 49);
+  const memberDisc = isPremium ? Math.round(subtotal * 0.05) : 0;
+  const total = subtotal + delivery - memberDisc;
+
+  const stepNames = ["Delivery","Payment","Confirm"];
+  const stepsBar = stepNames.map((n, i) => {
+    const num = i + 1;
+    const cls = num < checkoutStep ? "done" : num === checkoutStep ? "active" : "";
+    return `${i > 0 ? `<div class="step-con${num<=checkoutStep?" done":""}"></div>` : ""}
+    <div class="step-item">
+      <div class="step-num ${cls}">${num < checkoutStep ? "✓" : num}</div>
+      <div class="step-lbl${cls?" active":""}">${n}</div>
+    </div>`;
+  }).join("");
+
+  document.getElementById("checkoutTitle").textContent = stepNames[checkoutStep - 1];
+
+  let body = `<div class="steps-bar">${stepsBar}</div>`;
+
+  if (checkoutStep === 1) {
+    body += `<div class="modal-section-title">Choose delivery</div>
+    <div class="modal-d-opts">
+      <div class="d-opt${selectedDelivery==="standard"?" sel":""}" onclick="setDelivery('standard')">
+        <div class="d-opt-icon"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg></div>
+        <div class="d-opt-info"><div class="d-opt-name">Standard (3–5 days)</div><div class="d-opt-desc">Free on orders ₹999+</div></div>
+        <div class="d-opt-price">${subtotal>=999?"Free":"₹49"}</div>
+      </div>
+      <div class="d-opt${selectedDelivery==="express"?" sel":""}" onclick="setDelivery('express')">
+        <div class="d-opt-icon"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
+        <div class="d-opt-info"><div class="d-opt-name">Express (next day)</div><div class="d-opt-desc">Delivered by tomorrow 6pm</div></div>
+        <div class="d-opt-price">₹199</div>
+      </div>
+      <div class="d-opt${selectedDelivery==="premium"?" sel":""}" onclick="setDelivery('premium')">
+        <div class="d-opt-icon"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
+        <div class="d-opt-info"><div class="d-opt-name">Same-day Premium ${isPremium?"✦":""}</div><div class="d-opt-desc">Delivered today by 8pm</div></div>
+        <div class="d-opt-price">${isPremium?"Free":"₹499"}</div>
+      </div>
+    </div>
+    <div class="modal-section-title">Delivery address</div>
+    <div class="form-group"><label class="form-label">Full name</label><input class="form-input" placeholder="Raj Mehta"></div>
+    <div class="form-group"><label class="form-label">Phone</label><input class="form-input" type="tel" placeholder="+91 98765 43210"></div>
+    <div class="form-row">
+      <div class="form-group"><label class="form-label">Pincode</label><input class="form-input" placeholder="400001"></div>
+      <div class="form-group"><label class="form-label">City</label><input class="form-input" placeholder="Mumbai"></div>
+    </div>
+    <div class="form-group"><label class="form-label">Address</label><input class="form-input" placeholder="House no, Street, Area"></div>
+    <button class="btn-primary" style="width:100%;height:44px;justify-content:center;font-size:14px;margin-top:4px" onclick="nextCheckoutStep()">Continue to payment →</button>`;
+  } else if (checkoutStep === 2) {
+    body += `<div class="modal-section-title">Payment method</div>
+    <div class="payment-methods">
+      <div class="pay-method sel" onclick="selPay(this)"><div class="pm-icon">💳</div>Card</div>
+      <div class="pay-method" onclick="selPay(this)"><div class="pm-icon">📱</div>UPI</div>
+      <div class="pay-method" onclick="selPay(this)"><div class="pm-icon">🏦</div>Net banking</div>
+    </div>
+    <div class="form-group"><label class="form-label">Card number</label><input class="form-input" placeholder="4242 4242 4242 4242"></div>
+    <div class="form-row">
+      <div class="form-group"><label class="form-label">Expiry</label><input class="form-input" placeholder="MM / YY"></div>
+      <div class="form-group"><label class="form-label">CVV</label><input class="form-input" placeholder="•••" type="password"></div>
+    </div>
+    <div class="modal-total-box">
+      <div class="cs-row"><span>Subtotal</span><span style="color:var(--t1)">₹${subtotal.toLocaleString()}</span></div>
+      <div class="cs-row"><span>Delivery</span><span style="color:var(--t1)">${delivery===0?"Free":"₹"+delivery}</span></div>
+      ${isPremium?`<div class="cs-row disc"><span>Premium discount</span><span>-₹${memberDisc.toLocaleString()}</span></div>`:""}
+      <div class="cs-row total"><span>Total payable</span><span>₹${total.toLocaleString()}</span></div>
+    </div>
+    <button class="btn-primary" style="width:100%;height:44px;justify-content:center;font-size:14px" onclick="nextCheckoutStep()">Pay ₹${total.toLocaleString()} →</button>
+    <button class="btn-outline" style="width:100%;height:38px;justify-content:center;font-size:13px;margin-top:8px" onclick="checkoutStep=1;renderCheckoutStep()">← Back</button>`;
+  } else if (checkoutStep === 3) {
+    // Place order
+    const now = new Date();
+    const dateStr = `${now.getDate()} ${now.toLocaleString("default",{month:"short"})} ${now.getFullYear()} ${now.getHours()}:${String(now.getMinutes()).padStart(2,"0")}`;
+    const deliveryLabels = {standard:"Standard delivery",express:"Express delivery",premium:"Same-day delivery"};
+    orders.unshift({
+      date: dateStr,
+      items: cart.map(i => ({emoji:i.emoji,name:i.name})),
+      itemCount: cart.reduce((s,i)=>s+i.qty,0),
+      total,
+      delivery: deliveryLabels[selectedDelivery],
+      trackStep: 1
+    });
+    cart = []; historyStack = []; futureStack = [];
+    updateAll();
+    body += `<div class="order-success">
+      <div class="success-icon"><svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+      <div style="font-size:20px;font-weight:800;color:var(--white);margin-bottom:6px">Order placed! 🎉</div>
+      <div style="font-size:13.5px;color:var(--t2);margin-bottom:20px">Order #${999+orders.length} confirmed · ₹${total.toLocaleString()} paid</div>
+      <button class="btn-primary" style="margin:0 auto;padding:0 24px;height:40px" onclick="closeModal('checkoutModal');showPage('orders')">Track your order →</button>
+    </div>`;
+  }
+
+  document.getElementById("checkoutBody").innerHTML = body;
+}
+
+function nextCheckoutStep() { checkoutStep++; renderCheckoutStep(); }
+function selPay(el) { document.querySelectorAll(".pay-method").forEach(e=>e.classList.remove("sel")); el.classList.add("sel"); }
+
+// ═══════════════════════════════════════════════
+// PREMIUM
+// ═══════════════════════════════════════════════
+function selectPlan(plan, el) {
+  selectedPlan = plan;
+  document.querySelectorAll(".pricing-card").forEach(e => e.classList.remove("sel"));
+  el.classList.add("sel");
+}
+function activatePremium() {
+  isPremium = true;
+  closeModal("premiumModal");
+  toast("✦ Welcome to ShopWave Premium!");
+  updateAll();
+}
+
+// ═══════════════════════════════════════════════
+// PAGE NAVIGATION
+// ═══════════════════════════════════════════════
+function showPage(id) {
+  document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
+  document.getElementById("page-" + id).classList.add("active");
+  document.querySelectorAll(".nav-btn[id^='btn']").forEach(b => b.classList.remove("active"));
+  const btn = document.getElementById("btn" + id.charAt(0).toUpperCase() + id.slice(1));
+  if (btn) btn.classList.add("active");
+  if (id === "home") renderHome();
+  if (id === "catalog") renderCatalog();
+  if (id === "cart") renderCart();
+  if (id === "wishlist") renderWishlist();
+  if (id === "orders") renderOrders();
+  document.getElementById("mainContent").scrollTop = 0;
+}
+
+// ═══════════════════════════════════════════════
+// MODALS
+// ═══════════════════════════════════════════════
+function openModal(id) {
+  document.getElementById(id).classList.add("open");
+}
+function closeModal(id) {
+  document.getElementById(id).classList.remove("open");
+}
+document.querySelectorAll(".modal-bg").forEach(el => {
+  el.addEventListener("click", function(e) {
+    if (e.target === this) closeModal(this.id);
+  });
+});
+
+// ═══════════════════════════════════════════════
+// TOAST
+// ═══════════════════════════════════════════════
+let toastTimer;
+function toast(msg) {
+  const t = document.getElementById("toast");
+  document.getElementById("toastMsg").textContent = msg;
+  t.classList.add("show");
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove("show"), 2500);
+}
+
+// ═══════════════════════════════════════════════
+// GLOBAL UPDATE
+// ═══════════════════════════════════════════════
+function updateAll() {
+  // Badges
+  const total = cart.reduce((s, i) => s + i.qty, 0);
+  const cartBadge = document.getElementById("cartBadge");
+  cartBadge.textContent = total;
+  cartBadge.style.display = total > 0 ? "flex" : "none";
+
+  const wlBadge = document.getElementById("wlBadge");
+  wlBadge.textContent = wishlist.length;
+  wlBadge.style.display = wishlist.length > 0 ? "flex" : "none";
+
+  // Sidebar stats
+  const subtotal = cart.reduce((s, i) => s + i.price * i.qty, 0);
+  const savings = cart.reduce((s, i) => s + (i.oldPrice - i.price) * i.qty, 0);
+  document.getElementById("sideCartTotal").textContent = "₹" + subtotal.toLocaleString();
+  document.getElementById("sideWlCount").textContent = wishlist.length + " items";
+  document.getElementById("sideSavings").textContent = "₹" + savings.toLocaleString();
+
+  // Re-render active page content
+  const activePage = document.querySelector(".page.active");
+  if (activePage) {
+    const pid = activePage.id.replace("page-", "");
+    if (pid === "catalog") renderCatalog();
+    if (pid === "cart") renderCart();
+    if (pid === "wishlist") renderWishlist();
+    if (pid === "orders") renderOrders();
+    if (pid === "home") renderHome();
+  }
+}
+
+// ═══════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════
+loadProducts();
+showPage("home");
+</script>
+</body>
+</html>
