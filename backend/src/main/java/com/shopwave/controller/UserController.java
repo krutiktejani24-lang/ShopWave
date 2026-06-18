@@ -15,7 +15,7 @@ import java.util.List;
 @CrossOrigin(origins = {
     "http://127.0.0.1:5500",
     "https://shopwave-1-nwj2.onrender.com"
-})
+})  
 public class UserController {
 
     @Autowired
@@ -43,4 +43,9 @@ public class UserController {
 
         return ResponseEntity.status(401).body("Invalid Credentials");
     }
+
+    @GetMapping("/all")
+public List<User> getAllUsers() {
+    return userRepository.findAll();
+}
 }   
