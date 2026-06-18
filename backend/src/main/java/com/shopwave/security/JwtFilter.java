@@ -17,50 +17,47 @@ import java.util.List;
 @Component
 public class JwtFilter extends OncePerRequestFilter {
 
-    @Override
-    protected void doFilterInternal(
-            HttpServletRequest request,
-            HttpServletResponse response,
-            FilterChain filterChain)
-            throws ServletException, IOException {
+@Override
+protected void doFilterInternal(
+        HttpServletRequest request,
+        HttpServletResponse response,
+        FilterChain filterChain)
+        throws ServletException, IOException {
 
-        String authHeader =
-                request.getHeader("Authorization");
+    String path = request.getServletPath();
 
-        if (authHeader != null &&
-                authHeader.startsWith("Bearer ")) {
-
-            String token =
-                    authHeader.substring(7);
-
-            if (JwtUtil.validateToken(token)) {
-
-                String email =
-                        JwtUtil.extractEmail(token);
-
-                UsernamePasswordAuthenticationToken auth =
-                        new UsernamePasswordAuthenticationToken(
-                                email,
-                                null,
-                                List.of(new SimpleGrantedAuthority("USER"))
-                        );
-
-                SecurityContextHolder
-                        .getContext()
-                        .setAuthentication(auth);
-
-                        String path = request.getServletPath();
-
-if (path.startsWith("/users/login")
-        || path.startsWith("/users/register")
-        || path.startsWith("/products")) {
-
-    filterChain.doFilter(request, response);
-    return;
-}
-            }
-        }
+    // Public APIs
+    if (path.startsWith("/users/login")
+            || path.startsWith("/users/register")
+            || path.startsWith("/api/products")) {
 
         filterChain.doFilter(request, response);
+        return;
     }
+
+    String authHeader = request.getHeader("Authorization");
+
+    if (authHeader != null && authHeader.startsWith("Bearer ")) {
+
+        String token = authHeader.substring(7);
+
+        if (JwtUtil.validateToken(token)) {
+
+            String email = JwtUtil.extractEmail(token);
+
+            UsernamePasswordAuthenticationToken auth =
+                    new UsernamePasswordAuthenticationToken(
+                            email,
+                            null,
+                            List.of(new SimpleGrantedAuthority("USER"))
+                    );
+
+            SecurityContextHolder
+                    .getContext()
+                    .setAuthentication(auth);
+        }
+    }
+
+    filterChain.doFilter(request, response);
+}
 }
