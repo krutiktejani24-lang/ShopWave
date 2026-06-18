@@ -24,9 +24,15 @@ public class SecurityConfig {
             .httpBasic(httpBasic -> httpBasic.disable())
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers(
-                    "/users/login",
-                    "/users/register",
-                     "/products/**"
+                   "/",
+
+        "/products/**",
+
+        "/api/products/**",
+
+        "/login",
+
+        "/register"
                 ).permitAll()
                 .anyRequest().authenticated()
             );
