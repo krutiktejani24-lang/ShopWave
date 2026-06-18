@@ -25,6 +25,7 @@ protected void doFilterInternal(
         throws ServletException, IOException {
 
     String path = request.getServletPath();
+    System.out.println("PATH = " + request.getServletPath());
 
     // Public APIs
     if (path.startsWith("/users/login")
