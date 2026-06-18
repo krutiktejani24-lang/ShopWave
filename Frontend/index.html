@@ -814,18 +814,12 @@ html,body{height:100%;overflow:hidden;font-family:'Inter',sans-serif;background:
   <span id="toastMsg"></span>
 </div>
 
+
 <script>
+const token = localStorage.getItem("token");
 
-  if(response.ok){
-
-    const token = await response.text();
-
-    localStorage.setItem("token", token);
-    localStorage.setItem("shopwaveLogin","true");
-
-    alert("Login Successful");
-
-    window.location.href = "ShopWave.html";
+if(!token){
+    window.location.href = "login.html";
 }
 // ═══════════════════════════════════════════════
 // DATA
