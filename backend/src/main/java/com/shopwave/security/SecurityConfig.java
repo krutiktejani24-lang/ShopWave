@@ -14,28 +14,30 @@ public class SecurityConfig {
     private JwtFilter jwtFilter;
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http)
-            throws Exception {
+public SecurityFilterChain securityFilterChain(HttpSecurity http)
+        throws Exception {
 
-        http
-            .csrf(csrf -> csrf.disable())
-            .cors(cors -> {})
-            .formLogin(form -> form.disable())
-            .httpBasic(httpBasic -> httpBasic.disable())
-            .authorizeHttpRequests(auth -> auth
-                .requestMatchers(
-                   "/", "/products/**",
-        "/api/products/**",
-        "/login",
-        "/register"
-                ).permitAll()
-            );
-
-        http.addFilterBefore(
-                jwtFilter,
-                UsernamePasswordAuthenticationFilter.class
+    http
+        .csrf(csrf -> csrf.disable())
+        .cors(cors -> {})
+        .formLogin(form -> form.disable())
+        .httpBasic(httpBasic -> httpBasic.disable())
+        .authorizeHttpRequests(auth -> auth
+            .requestMatchers(
+                "/",
+                "/products/**",
+                "/api/products/**",
+                "/login",
+                "/register"
+            ).permitAll()
+            .anyRequest().authenticated()
         );
 
-        return http.build();
-    }
+    http.addFilterBefore(
+            jwtFilter,
+            UsernamePasswordAuthenticationFilter.class
+    );
+
+    return http.build();
+}
 }
