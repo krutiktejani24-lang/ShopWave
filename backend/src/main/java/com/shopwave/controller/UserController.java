@@ -26,23 +26,37 @@ public class UserController {
         return userRepository.save(user);
     }
 
-    @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody User user) {
+@PostMapping("/login")
+public ResponseEntity<?> login(@RequestBody User user) {
 
-        Optional<User> existingUser =
-                userRepository.findByEmail(user.getEmail());
+    System.out.println("EMAIL = " + user.getEmail());
+    System.out.println("PASSWORD = " + user.getPassword());
 
-        if (existingUser.isPresent() &&
-    existingUser.get().getPassword().equals(user.getPassword())) {
+    Optional<User> existingUser =
+            userRepository.findByEmail(user.getEmail());
 
-    String token =
-        JwtUtil.generateToken(user.getEmail());
+    System.out.println("FOUND = " + existingUser.isPresent());
 
-    return ResponseEntity.ok(token);
-}
-
-        return ResponseEntity.status(401).body("Invalid Credentials");
+    if(existingUser.isPresent()){
+        System.out.println(
+            "DB PASSWORD = " +
+            existingUser.get().getPassword()
+        );
     }
+
+    if(existingUser.isPresent() &&
+       existingUser.get().getPassword()
+           .equals(user.getPassword())) {
+
+        String token =
+            JwtUtil.generateToken(user.getEmail());
+
+        return ResponseEntity.ok(token);
+    }
+
+    return ResponseEntity.status(401)
+            .body("Invalid Credentials");
+}
 
     @GetMapping("/all")
 public List<User> getAllUsers() {
