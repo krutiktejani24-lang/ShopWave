@@ -150,7 +150,7 @@ async function loginUser(){
 
     try{
 
-         fetch(
+        const response = await fetch(
             "https://shopwave-s8ro.onrender.com/users/login",
             {
                 method:"POST",
@@ -168,10 +168,7 @@ async function loginUser(){
 
             const token = await response.text();
 
-            localStorage.setItem(
-                "token",
-                token
-            );
+            localStorage.setItem("token", token);
 
             alert("Login Successful");
 
