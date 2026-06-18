@@ -12,7 +12,10 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/users")
-@CrossOrigin(origins = "http://127.0.0.1:5500")
+@CrossOrigin(origins = {
+    "http://127.0.0.1:5500",
+    "https://shopwave-1-nwj2.onrender.com"
+})
 public class UserController {
 
     @Autowired

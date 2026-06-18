@@ -13,7 +13,7 @@ public class SecurityConfig {
     @Autowired
     private JwtFilter jwtFilter;
 
-    @Bean
+   @Bean
 public SecurityFilterChain securityFilterChain(HttpSecurity http)
         throws Exception {
 
@@ -25,10 +25,10 @@ public SecurityFilterChain securityFilterChain(HttpSecurity http)
         .authorizeHttpRequests(auth -> auth
             .requestMatchers(
                 "/",
+                "/users/login",
+                "/users/register",
                 "/products/**",
-                "/api/products/**",
-                "/login",
-                "/register"
+                "/api/products/**"
             ).permitAll()
             .anyRequest().authenticated()
         );
